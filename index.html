@@ -3,42 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A personal finance tracker for managing expenses, income, and financial goals.">
     <title>FINTRACKER</title>
 </head>
 <body>
     <div class="container">
-        <nav> 
-            <h2> FINTRACKER - Your Gateway to Financial Discipline</h2>
-        </nav>
+        <header> 
+            <h2> FINTRACKER - Your Gateway to Financial Discipline </h2>
+        </header>
         <div class="dashboard">
             <!-- Here we have 3 blocks that show some fast insights-->
             <div class="fast-insights">
+                <div class="new-transaction">
+                    <!-- Just a button to add a new transaction  -->
+                </div>
                 <div class="last-expense">
-
+                    <!-- Just a box showing the last expense with it's value -->
                 </div>
                 <div class="last-income">
-
+                    <!-- Just a box showing the last income with it's value -->
                 </div>
-                <div class="balance">
+                <div class="balance">                    
+                    <!-- Just a box showing the current balance  -->
                 </div>
             </div>
-            <div class="expense-chart">
+            <div class="charts">
                 <!-- A pie chart showing the categories of the expenses -->
+                 <div class="line">
+                    <!-- Line chart of current balance and expenses for the past 15 days -->
+                 </div>
+                 <div class="pie">
+                    <!-- A pie chart showing the categorical distribution of the expenses-->
+                 </div>
             </div>
         </div>
         <div class="transactions">
+            <table id="transactionsTable">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody id="transactionsBody">
+                <!-- JS will insert rows here -->
+                </tbody>
+            </table>
             <!-- It shows a list of all the transactions as a table, you could edit delete , -->
             <!-- Each entry has a value type, source , date that i sby default today's date and additional very small note -->
             <!-- On the side there's a trash button to remoce it or somwthing else, if you want to suggest -->
         </div>
         <div class="bucket-list">
             <!--A place to list all the bucket list items and their prices -->
+            <table id="BucketListTable">
+                <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Priority</th>
+                </tr>
+                </thead>
+                <tbody id="BucketListBody">
+                <!-- JS will insert rows here -->
+                </tbody>
+            </table>
         </div>
         <div class="settings">
             <!-- Here I give some setting options, like reseting stuff maybe, you could sugguest stuff -->
         </div>
-        
-
+        <div class="explore-articles">
+            <p> Achieve financial freedom with some reads ! </p>
+            <!-- BUTTONS to some nice articles on personal finance -->
+        </div>
+        <div class="me">
+            <!-- Just some links to follow me on linkedin and github -->
+        </div>
     </div>
 </body>
 </html>
