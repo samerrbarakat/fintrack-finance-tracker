@@ -1,79 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A personal finance tracker for managing expenses, income, and financial goals.">
-    <link rel="stylesheet" href="style.css">
-    <title>FINTRACKER</title>
-</head>
-<body>
-    <div class="container">
-        <header> 
-            <p> <h1>FINTRACKER</h1>  <h2>Your Gateway to Financial Discipline</h2> </p>
-        </header>
-        <div class="dashboard">
-            <!-- Here we have 3 blocks that show some fast insights-->
-            <div class="fast-insights">
-                <!-- Just a button to add a new transaction  -->
-                <button class="fastdiv" id="new-transaction-button">Log a new <br> transaction</button>
-                <div class="fastdiv">
-                    <!-- Just a box showing the last expense with it's value -->
-                    <h5>- 200$ </h5>
-                    <p> Gift for mom</p>
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A personal finance tracker for managing expenses, income, and financial goals.">
+        <link rel="stylesheet" href="style.css">
+        <title>FINTRACKER</title>
+    </head>
+    <body>
+        <div class="container">
+            <header> 
+                <h1>FINTRACKER</h1>  <h2>Your Gateway to Financial Discipline</h2>
+            </header>
+            <div class="dashboard">
+                <!-- Here we have 3 blocks that show some fast insights-->
+                <div class="fast-insights">
+                    <!-- Just a button to add a new transaction  -->
+                    <button class="fastdiv" id="new-transaction-button">Log a new <br> transaction</button>
+                    <div class="fastdiv">
+                        <!-- Just a box showing the last expense with it's value -->
+                        <h5>- 200$ </h5>
+                        <p> Gift for mom</p>
+                    </div>
+                    <div class="fastdiv">
+                        <!-- Just a box showing the last income with it's value -->
+                        <h5> +1500$ </h5>
+                        <p> Salary</p>
+                    </div>
+                    <div class="fastdiv">                    
+                        <!-- Just a box showing the current balance  -->
+                        <h5>+ 3400$</h5>
+                        <p>Balance</p>
+                    </div>
                 </div>
-                <div class="fastdiv">
-                    <!-- Just a box showing the last income with it's value -->
-                    <h5> +1500$ </h5>
-                    <p> Salary</p>
-                </div>
-                <div class="fastdiv">                    
-                    <!-- Just a box showing the current balance  -->
-                    <h5>+ 3400$</h5>
-                    <p>Balance</p>
+                <div class="charts">
+                    <!-- A pie chart showing the categories of the expenses -->
+                    <div class="line">
+                        <!-- Line chart of current balance and expenses for the past 15 days -->
+                        <canvas id="lineChart" height="250px"></canvas>
+                    </div>
+                    <div class="pie">
+                        <!-- A pie chart showing the categorical distribution of the expenses-->
+                        <canvas id="pieChart" width="300" height="300"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="charts">
-                <!-- A pie chart showing the categories of the expenses -->
-                 <div class="line">
-                    <!-- Line chart of current balance and expenses for the past 15 days -->
-                 </div>
-                 <div class="pie">
-                    <!-- A pie chart showing the categorical distribution of the expenses-->
-                 </div>
-            </div>
-        </div>
-        <div class="transactions">
-            <table id="transactionsTable">
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Category</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody id="transactionsBody">
-                <!-- JS will insert rows here -->
-                    <tr>
-                        <td>2025-06-19</td>
-                        <td>Grocery Shopping</td>
-                        <td>$45.20</td>
-                        <td>Food</td>
-                        <td><button>Edit</button></td>
-                        <td><button>Delete</button></td>
-                    </tr>
-                    <tr>
-                        <td>2025-06-18</td>
-                        <td>Salary</td>
-                        <td>$1,200.00</td>
-                        <td>Income</td>
-                        <td><button>Edit</button></td>
-                        <td><button>Delete</button></td>
-                    </tr>
-                </tbody>
+            <div class="transactions">
+                <table id="transactionsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsBody">
+                        <!-- JS will insert rows here -->
+                        <tr>
+                            <td>2025-06-19</td>
+                            <td>Grocery Shopping</td>
+                            <td>$45.20</td>
+                            <td>Food</td>
+                            <td><button>Edit</button></td>
+                            <td><button>Delete</button></td>
+                        </tr>
+                        <tr>
+                            <td>2025-06-18</td>
+                            <td>Salary</td>
+                            <td>$1,200.00</td>
+                            <td>Income</td>
+                            <td><button>Edit</button></td>
+                            <td><button>Delete</button></td>
+                        </tr>
+                    </tbody>
             </table>
             <!-- It shows a list of all the transactions as a table, you could edit delete , -->
             <!-- Each entry has a value type, source , date that i sby default today's date and additional very small note -->
@@ -91,7 +94,7 @@
                     </tr>
                 </thead>
                 <tbody id="BucketListBody">
-                <!-- JS will insert rows here -->
+                    <!-- JS will insert rows here -->
                     <tr>
                         <td>New Laptop</td>
                         <td>MacBook Air M3</td>
@@ -118,5 +121,7 @@
             <!-- Just some links to follow me on linkedin and github -->
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="charts.js"></script>
 </body>
 </html>
