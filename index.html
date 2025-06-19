@@ -4,27 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A personal finance tracker for managing expenses, income, and financial goals.">
+    <link rel="stylesheet" href="style.css">
     <title>FINTRACKER</title>
 </head>
 <body>
     <div class="container">
         <header> 
-            <h2> FINTRACKER - Your Gateway to Financial Discipline </h2>
+            <p> <h1>FINTRACKER</h1>  <h2>Your Gateway to Financial Discipline</h2> </p>
         </header>
         <div class="dashboard">
             <!-- Here we have 3 blocks that show some fast insights-->
             <div class="fast-insights">
-                <div class="new-transaction">
-                    <!-- Just a button to add a new transaction  -->
-                </div>
-                <div class="last-expense">
+                <!-- Just a button to add a new transaction  -->
+                <button class="fastdiv" id="new-transaction-button">Log a new <br> transaction</button>
+                <div class="fastdiv">
                     <!-- Just a box showing the last expense with it's value -->
+                    <h5>- 200$ </h5>
+                    <p> Gift for mom</p>
                 </div>
-                <div class="last-income">
+                <div class="fastdiv">
                     <!-- Just a box showing the last income with it's value -->
+                    <h5> +1500$ </h5>
+                    <p> Salary</p>
                 </div>
-                <div class="balance">                    
+                <div class="fastdiv">                    
                     <!-- Just a box showing the current balance  -->
+                    <h5>+ 3400$</h5>
+                    <p>Balance</p>
                 </div>
             </div>
             <div class="charts">
@@ -51,6 +57,22 @@
                 </thead>
                 <tbody id="transactionsBody">
                 <!-- JS will insert rows here -->
+                    <tr>
+                        <td>2025-06-19</td>
+                        <td>Grocery Shopping</td>
+                        <td>$45.20</td>
+                        <td>Food</td>
+                        <td><button>Edit</button></td>
+                        <td><button>Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>2025-06-18</td>
+                        <td>Salary</td>
+                        <td>$1,200.00</td>
+                        <td>Income</td>
+                        <td><button>Edit</button></td>
+                        <td><button>Delete</button></td>
+                    </tr>
                 </tbody>
             </table>
             <!-- It shows a list of all the transactions as a table, you could edit delete , -->
@@ -61,15 +83,27 @@
             <!--A place to list all the bucket list items and their prices -->
             <table id="BucketListTable">
                 <thead>
-                <tr>
-                    <th>Item Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Priority</th>
-                </tr>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Priority</th>
+                    </tr>
                 </thead>
                 <tbody id="BucketListBody">
                 <!-- JS will insert rows here -->
+                    <tr>
+                        <td>New Laptop</td>
+                        <td>MacBook Air M3</td>
+                        <td>$1,300</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>Trip to Japan</td>
+                        <td>2-week vacation</td>
+                        <td>$3,000</td>
+                        <td>Medium</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

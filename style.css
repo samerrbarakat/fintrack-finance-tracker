@@ -1,0 +1,91 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ; 
+    font-size: 20px;
+}
+
+body {
+  background-color: #1f2933;   
+  color: #f1f1f1;          
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+}
+header {
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+header h1{
+  font-size: 45px;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.dashboard{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.fast-insights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.fastdiv {
+  flex: 1;
+  min-width: 180px;
+  background-color: #2c3e50;         /* Card background in dark theme */
+  border-radius: 8px;                /* Soft corners */
+  padding: 1rem;                     /* Space inside the card */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);  /* Card elevation */
+  display: flex;
+  flex-direction: column;
+  align-items: center;              /* Center text horizontally */
+  justify-content: center;          /* Center vertically if height grows */
+  color: #f1f1f1;
+  text-align: center;
+  transition: transform 0.2s ease;  /* Smooth hover zoom */
+}
+
+.fastdiv:hover {
+  font-weight: bolder;
+  transform: scale(1.1);         /* Slight zoom on hover */
+}
+
+/* Make the numbers pop */
+.fastdiv h5 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Description text */
+.fastdiv p {
+  font-size: 0.95rem;
+  color: #dcdcdc;
+}
+
+/* Button styling inside the card */
+#new-transaction-button {
+  background-color: #206a74;
+  border: none;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+#new-transaction-button:hover {
+  background-color: rgb(0, 182, 202);
+  font-weight: bolder;
+}
