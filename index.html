@@ -11,7 +11,7 @@
     <body>
         <div class="container">
             <header> 
-                <h1>FINTRACKER</h1>  <h2>Your Gateway to Financial Discipline</h2>
+                <h1>FINTRACK</h1>  <h2>Your Gateway to Financial Discipline</h2>
             </header>
             <div class="dashboard">
                 <!-- Here we have 3 blocks that show some fast insights-->
@@ -120,18 +120,31 @@
                 </tbody>
             </table>
         </div>
+        <h2 class="section-title">Explore Financial Articles</h2>
+        <div class="explore-articles">
+            <!-- BUTTONS to some nice articles on personal finance -->
+            <div class="button-container">
+                <a href="https://www.investopedia.com/personal-finance-4427760" class="article-btn">Personal Finance: The Complete Guide</a>
+                <a href="https://hbr.org/2022/11/5-ways-to-manage-your-personal-finances" class="article-btn">5 Ways to Manage Your Personal Finances</a>
+                <a href="https://jetstreamfcu.org/resources/blog/financial-education/master-your-personal-finance-5-essential-money-management-tips" class="article-btn">Master Your Personal Finance: 5 Essential Money Management Tips</a>
+                <a href="https://personalfinance.duke.edu/personal-finance-foundations/creating-your-money-management-system/" class="article-btn">Creating Your Money Management System</a>
+                <a href="https://mygsb.bank/news/5-fundamental-principles-of-money-management-for-beginners/" class="article-btn">5 Fundamental Principles of Money Management for Beginners</a>
+                <a href="https://beyondfinances.medium.com/the-5-piece-framework-you-need-to-better-manage-your-personal-finances-a644e191c94f" class="article-btn">The 5‑Piece Framework You Need to Better Manage Your Personal Finances</a>
+                <a href="https://www.fscb.com/blog/7-money-management-tips-to-improve-your-finances" class="article-btn">7 Money Management Tips to Improve Your Finances</a>
+                <a href="https://www.iese.edu/insight/articles/personal-finance-beginners-guide/" class="article-btn">A Beginner’s Guide to Personal Finance</a>
+            </div>
+        </div>
         <h2 class="section-title">Settings</h2>
         <div class="settings">
             <!-- Here I give some setting options, like reseting stuff maybe, you could sugguest stuff -->
-        </div>
-        <h2 class="section-title">Explore Financial Articles</h2>
-        <div class="explore-articles">
-            <p> Achieve financial freedom with some reads ! </p>
-            <!-- BUTTONS to some nice articles on personal finance -->
-        </div>
-        <h2 class="section-title">Follow Me</h2>
-        <div class="me">
-            <!-- Just some links to follow me on linkedin and github -->
+             <div class="settings-buttons">
+                <button onclick="resetAllData()">Reset All Data</button>
+                <button onclick="changeBalance()">Change Balance</button>
+                <button onclick="addIncomeCategory()">Add Income Category</button>
+                <button onclick="addExpenseCategory()">Add Expense Category</button>
+                <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+                <button onclick="hideArticles()">Toggle Article Section</button>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
