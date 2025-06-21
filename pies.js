@@ -1,6 +1,13 @@
-const categories = ['Food', 'Transport', 'Shopping', 'Entertainment', 'Bills'];
-const amounts = [450, 120, 300, 150, 280];
-const backgroundColors = [
+const piecategories = ['Food', 'Transport', 'Shopping', 'Entertainment', 'Bills'];
+const pieamounts = [450, 120, 300, 150, 280];
+const linelabels = [
+      "June 5", "June 6", "June 7", "June 8", "June 9",
+      "June 10", "June 11", "June 12", "June 13", "June 14",
+      "June 15", "June 16", "June 17", "June 18", "June 19"
+    ] ; 
+const lineexpenses =[120, 45, 230, 90, 310, 60, 180, 25, 220, 70, 160, 130, 90, 300, 40]; 
+const linebalance = [3000, 2955, 2725, 2635, 2325, 2265, 2085, 2060, 1840, 1770, 1610, 1480, 1390, 1090, 1050]; 
+const piebackgroundColors = [
   '#d62839',
   '#ba324f', 
   '#175676', 
@@ -9,14 +16,48 @@ const backgroundColors = [
 ];
 
 const pieCtx = document.getElementById('pieChart').getContext('2d');
+const ctx = document.getElementById('lineChart').getContext('2d');
+
+const lineChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: linelabels,
+    datasets: [
+      {
+        label: 'Expenses',
+        data: lineexpenses,
+        borderColor: '#e74c3c',  // Red for expenses
+        backgroundColor: 'rgba(231, 76, 60, 0.2)',
+        fill: true,
+        tension: 0.3
+      },
+      {
+        label: 'Balance',
+        data: linebalance,
+        borderColor: '#2ecc71',  // Green for balance
+        backgroundColor: 'rgba(46, 204, 113, 0.2)',
+        fill: true,
+        tension: 0.3
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: false  // let y-scale adapt naturally
+      }
+    }
+  }
+});
 
 const pieChart = new Chart(pieCtx, {
   type: 'pie',
   data: {
-    labels: categories,
+    labels: piecategories,
     datasets: [{
-      data: amounts,
-      backgroundColor: backgroundColors
+      data: pieamounts,
+      backgroundColor: piebackgroundColors
     }]
   },
   options: {

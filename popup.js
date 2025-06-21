@@ -16,10 +16,9 @@ if (e.target === popup) {
 }
 });
 
-// Optional: handle form submission
 document.getElementById("transactionForm").addEventListener("submit", function(e) {
-e.preventDefault();
-// Process form data here...
-alert("Transaction added!");
-popup.style.display = "none";
+    e.preventDefault();
+    // Process form data here...
+    alert("Transaction added!");
+    popup.style.display = "none";
 });
