@@ -1,10 +1,13 @@
+// useful functions 
+function getDaysInCurrentMonth() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+}
+console.log(getDaysInCurrentMonth());
+
 const piecategories = ['Food', 'Transport', 'Shopping', 'Entertainment', 'Bills'];
 const pieamounts = [450, 120, 300, 150, 280];
-const linelabels = [
-      "June 5", "June 6", "June 7", "June 8", "June 9",
-      "June 10", "June 11", "June 12", "June 13", "June 14",
-      "June 15", "June 16", "June 17", "June 18", "June 19"
-    ] ; 
+const linelabels = [...Array(getDaysInCurrentMonth()).keys().map(x=>x+1)]; 
 const lineexpenses =[120, 45, 230, 90, 310, 60, 180, 25, 220, 70, 160, 130, 90, 300, 40]; 
 const linebalance = [3000, 2955, 2725, 2635, 2325, 2265, 2085, 2060, 1840, 1770, 1610, 1480, 1390, 1090, 1050]; 
 const piebackgroundColors = [
@@ -98,7 +101,21 @@ if (e.target === popup) {
 
 document.getElementById("transactionForm").addEventListener("submit", function(e) {
     e.preventDefault();
-    // Process form data here...
-    alert("Transaction added!");
-    popup.style.display = "none";
+
+    const description = document.getElementById("description").value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    const type = document.getElementById("type").value;
+    const category = document.getElementById("Category").value;
+    const date = new Date().toISOString().split('T')[0];
+
+    const transaction = { description, amount, type, category, date };
+
+    processTransaction(transaction);  
+    updateBalance(transaction);     
+    updateLastIncomeExpense();    
+    updateCharts();           
+
+    this.reset();
+    document.getElementById("popupForm").style.display = "none";
 });
+
