@@ -262,4 +262,9 @@ function getExpenseCategoryDistribution() {
 
   return distribution; // { "Grocery": 200, "Rent": 500, ... }
 }
-//###############################Savings ##############################################
+//###############################Saving##########################
+function updateSavings(newAmount) {
+  if (typeof newAmount !== "number" || isNaN(newAmount)) return false;
+  localStorage.setItem("savings", newAmount.toString());
+  return true;
+}
