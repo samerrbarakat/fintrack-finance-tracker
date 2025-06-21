@@ -11,7 +11,9 @@ function initializeLocalStorage() {
     if (localStorage.getItem("balance") === null) {
         localStorage.setItem("balance", "0");
     }
-
+    if (localStorage.getItem("savings") === null) {
+        localStorage.setItem("savings", "0");
+    }
     if (localStorage.getItem("transactions") === null) {
         localStorage.setItem("transactions", JSON.stringify([]));
     }
@@ -35,6 +37,33 @@ function initializeLocalStorage() {
         localStorage.setItem("expenseCategories", JSON.stringify([]));
     }
 
+}
+//#############################Get functions ##################################################
+function getBalance() {
+  return parseFloat(localStorage.getItem("balance")) || 0;
+}
+function getSavings() {
+  return parseFloat(localStorage.getItem("savings")) || 0;
+}
+function getLastIncome() {
+  return JSON.parse(localStorage.getItem("lastIncome")) || { description: "", value: 0 };
+}
+
+function getLastExpense() {
+  return JSON.parse(localStorage.getItem("lastExpense")) || { description: "", value: 0 };
+}
+function getBucketList() {
+  return JSON.parse(localStorage.getItem("bucketList")) || [];
+}
+function getAllTransactions() {
+  return JSON.parse(localStorage.getItem("transactions")) || [];
+}
+function getIncomeCategories() {
+  return JSON.parse(localStorage.getItem("incomeCategories")) || [];
+}
+
+function getExpenseCategories() {
+  return JSON.parse(localStorage.getItem("expenseCategories")) || [];
 }
 //###############################processing a transaction###############################
 function processTransaction(transaction){
@@ -110,24 +139,8 @@ function getDailyBalanceVariation() {
   }
   return dailyBalances; 
 }
-//#############################Get functions ##################################################
-function getBalance() {
-  return parseFloat(localStorage.getItem("balance")) || 0;
-}
 
-function getLastIncome() {
-  return JSON.parse(localStorage.getItem("lastIncome")) || { description: "", value: 0 };
-}
 
-function getLastExpense() {
-  return JSON.parse(localStorage.getItem("lastExpense")) || { description: "", value: 0 };
-}
-function getBucketList() {
-  return JSON.parse(localStorage.getItem("bucketList")) || [];
-}
-function getAllTransactions() {
-  return JSON.parse(localStorage.getItem("transactions")) || [];
-}
 //#####################Updating transactions functions ######################################################
 function deleteTransactionById(id) {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
@@ -249,4 +262,4 @@ function getExpenseCategoryDistribution() {
 
   return distribution; // { "Grocery": 200, "Rent": 500, ... }
 }
-
+//###############################Savings ##############################################
