@@ -97,3 +97,18 @@ function getDailyBalanceVariation() {
   }
   return dailyBalances; 
 }
+
+function getBalance() {
+  return parseFloat(localStorage.getItem("balance")) || 0;
+}
+
+function getLastIncome() {
+  return JSON.parse(localStorage.getItem("lastIncome")) || { description: "", value: 0 };
+}
+
+function getLastExpense() {
+  return JSON.parse(localStorage.getItem("lastExpense")) || { description: "", value: 0 };
+}
+function getBucketList() {
+  return JSON.parse(localStorage.getItem("bucketList")) || [];
+}
