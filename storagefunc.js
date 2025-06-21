@@ -204,3 +204,33 @@ function addBucketItem(item) {
   localStorage.setItem("bucketList", JSON.stringify(bucketList));
 }
 
+//########################Category Functions ################################################
+function addIncomeCategory(category) {
+  if (!category || typeof category !== "string") return; // Basic validation
+  const categories = JSON.parse(localStorage.getItem("incomeCategories")) || [];
+  if (!categories.includes(category)) {
+    categories.push(category);
+    localStorage.setItem("incomeCategories", JSON.stringify(categories));
+  }
+}
+
+function addExpenseCategory(category) {
+  if (!category || typeof category !== "string") return; // Basic validation
+  const categories = JSON.parse(localStorage.getItem("expenseCategories")) || [];
+  if (!categories.includes(category)) {
+    categories.push(category);
+    localStorage.setItem("expenseCategories", JSON.stringify(categories));
+  }
+}
+
+function deleteIncomeCategory(category) {
+  const categories = JSON.parse(localStorage.getItem("incomeCategories")) || [];
+  const filtered = categories.filter(cat => cat !== category);
+  localStorage.setItem("incomeCategories", JSON.stringify(filtered));
+}
+
+function deleteExpenseCategory(category) {
+  const categories = JSON.parse(localStorage.getItem("expenseCategories")) || [];
+  const filtered = categories.filter(cat => cat !== category);
+  localStorage.setItem("expenseCategories", JSON.stringify(filtered));
+}
