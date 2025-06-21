@@ -29,11 +29,14 @@ function initializeLocalStorage() {
 }
 
 function processTransaction(transaction){
+    if (!transaction.id) {
+    transaction.id = Date.now().toString();
+    }
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     transactions.push(transaction);
     localStorage.setItem("transactions", JSON.stringify(transactions));
-    let currBalance = parseFloat(localStorage.getItem("balance"));
 
+    let currBalance = parseFloat(localStorage.getItem("balance"));
     if (transaction.type === "income") {
     localStorage.setItem("lastIncome", JSON.stringify({
         description: transaction.description,
@@ -64,7 +67,7 @@ function getCurrentMonthExpenses() {
     return txDate.getFullYear() === currentYear && txDate.getMonth() === currentMonth;
   });
 }
-
+//////////////////////////////
 function getDailyBalanceVariation() {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
   const now = new Date();
@@ -111,4 +114,52 @@ function getLastExpense() {
 }
 function getBucketList() {
   return JSON.parse(localStorage.getItem("bucketList")) || [];
+}
+function getAllTransactions() {
+  return JSON.parse(localStorage.getItem("transactions")) || [];
+}
+function deleteTransactionById(id) {
+  const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+  const filtered = transactions.filter(tx => tx.id !== id);
+  localStorage.setItem("transactions", JSON.stringify(filtered));
+  recalculateBalanceAndLastTransactions(filtered);
+}
+
+function updateTransactionById(id, updatedTransaction) {
+  const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+  const index = transactions.findIndex(tx => tx.id === id);
+  if (index === -1) return false;
+
+  updatedTransaction.id = id;
+  transactions[index] = updatedTransaction;
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+  recalculateBalanceAndLastTransactions(transactions);
+  return true;
+}
+
+function recalculateBalanceAndLastTransactions(transactions) {
+  let balance = 0;
+  let lastIncome = { description: "", value: 0, date: null };
+  let lastExpense = { description: "", value: 0, date: null };
+
+  transactions.forEach(tx => {
+    const amount = parseFloat(tx.amount);
+    const txDate = new Date(tx.date);
+
+    if (tx.type === "income") {
+      balance += amount;
+      if (!lastIncome.date || txDate > new Date(lastIncome.date)) {
+        lastIncome = { description: tx.description, value: amount, date: tx.date };
+      }
+    } else if (tx.type === "expense") {
+      balance -= amount;
+      if (!lastExpense.date || txDate > new Date(lastExpense.date)) {
+        lastExpense = { description: tx.description, value: amount, date: tx.date };
+      }
+    }
+  });
+
+  localStorage.setItem("balance", balance.toString());
+  localStorage.setItem("lastIncome", JSON.stringify({ description: lastIncome.description, value: lastIncome.value }));
+  localStorage.setItem("lastExpense", JSON.stringify({ description: lastExpense.description, value: lastExpense.value }));
 }
