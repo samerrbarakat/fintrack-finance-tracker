@@ -234,3 +234,19 @@ function deleteExpenseCategory(category) {
   const filtered = categories.filter(cat => cat !== category);
   localStorage.setItem("expenseCategories", JSON.stringify(filtered));
 }
+
+//################### Retrive Expense Category values ###################################
+function getExpenseCategoryDistribution() {
+  const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+  const expenseTxs = transactions.filter(tx => tx.type === "expense");
+
+  const distribution = {};
+
+  expenseTxs.forEach(tx => {
+    const cat = tx.category || "Uncategorized";
+    distribution[cat] = (distribution[cat] || 0) + tx.amount;
+  });
+
+  return distribution; // { "Grocery": 200, "Rent": 500, ... }
+}
+
