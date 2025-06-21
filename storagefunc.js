@@ -6,28 +6,37 @@
 // - same for last income transaction.
 // - a list of all the Buccket lists and their attributes
 
+//################################################################################
 function initializeLocalStorage() {
-  if (localStorage.getItem("balance") === null) {
-    localStorage.setItem("balance", "0");
-  }
+    if (localStorage.getItem("balance") === null) {
+        localStorage.setItem("balance", "0");
+    }
 
-  if (localStorage.getItem("transactions") === null) {
-    localStorage.setItem("transactions", JSON.stringify([]));
-  }
+    if (localStorage.getItem("transactions") === null) {
+        localStorage.setItem("transactions", JSON.stringify([]));
+    }
 
-  if (localStorage.getItem("lastIncome") === null) {
-    localStorage.setItem("lastIncome", JSON.stringify({ description: "", value: 0 }));
-  }
+    if (localStorage.getItem("lastIncome") === null) {
+        localStorage.setItem("lastIncome", JSON.stringify({ description: "", value: 0 }));
+    }
 
-  if (localStorage.getItem("lastExpense") === null) {
-    localStorage.setItem("lastExpense", JSON.stringify({ description: "", value: 0 }));
-  }
+    if (localStorage.getItem("lastExpense") === null) {
+        localStorage.setItem("lastExpense", JSON.stringify({ description: "", value: 0 }));
+    }
 
-  if (localStorage.getItem("bucketList") === null) {
-    localStorage.setItem("bucketList", JSON.stringify([]));
-  }
+    if (localStorage.getItem("bucketList") === null) {
+        localStorage.setItem("bucketList", JSON.stringify([]));
+    }
+    if (localStorage.getItem("incomeCategories") === null) {
+        localStorage.setItem("incomeCategories", JSON.stringify([]));
+    }
+
+    if (localStorage.getItem("expenseCategories") === null) {
+        localStorage.setItem("expenseCategories", JSON.stringify([]));
+    }
+
 }
-
+//###############################processing a transaction###############################
 function processTransaction(transaction){
     if (!transaction.id) {
     transaction.id = Date.now().toString();
@@ -54,6 +63,7 @@ function processTransaction(transaction){
 }
 }
 
+//###########################Getting visual data ######################################
 function getCurrentMonthExpenses() {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
   const now = new Date();
@@ -67,7 +77,7 @@ function getCurrentMonthExpenses() {
     return txDate.getFullYear() === currentYear && txDate.getMonth() === currentMonth;
   });
 }
-//////////////////////////////
+
 function getDailyBalanceVariation() {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
   const now = new Date();
@@ -100,7 +110,7 @@ function getDailyBalanceVariation() {
   }
   return dailyBalances; 
 }
-
+//#############################Get functions ##################################################
 function getBalance() {
   return parseFloat(localStorage.getItem("balance")) || 0;
 }
@@ -118,6 +128,7 @@ function getBucketList() {
 function getAllTransactions() {
   return JSON.parse(localStorage.getItem("transactions")) || [];
 }
+//#####################Updating transactions functions ######################################################
 function deleteTransactionById(id) {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
   const filtered = transactions.filter(tx => tx.id !== id);
@@ -163,3 +174,33 @@ function recalculateBalanceAndLastTransactions(transactions) {
   localStorage.setItem("lastIncome", JSON.stringify({ description: lastIncome.description, value: lastIncome.value }));
   localStorage.setItem("lastExpense", JSON.stringify({ description: lastExpense.description, value: lastExpense.value }));
 }
+
+//######################Bucket list functions################################################
+
+function updateBucketItemById(id, updatedItem) {
+  const bucketList = getBucketList();
+  const index = bucketList.findIndex(item => item.id === id);
+  if (index === -1) return false;
+
+  updatedItem.id = id; // Preserve original ID
+  bucketList[index] = updatedItem;
+
+  localStorage.setItem("bucketList", JSON.stringify(bucketList));
+  return true;
+}
+
+function deleteBucketItemById(id) {
+  const bucketList = getBucketList();
+  const updatedList = bucketList.filter(item => item.id !== id);
+  localStorage.setItem("bucketList", JSON.stringify(updatedList));
+}
+
+function addBucketItem(item) {
+  if (!item.id) {
+    item.id = Date.now().toString(); // Unique ID
+  }
+  const bucketList = getBucketList();
+  bucketList.push(item);
+  localStorage.setItem("bucketList", JSON.stringify(bucketList));
+}
+
