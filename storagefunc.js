@@ -1,0 +1,1 @@
+// Here I have all the functions that deal with the local storage. 
