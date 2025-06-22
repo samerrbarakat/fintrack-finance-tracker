@@ -7,6 +7,10 @@
 // - a list of all the Buccket lists and their attributes
 
 //################################################################################
+function clearAllData() {
+  localStorage.clear();
+  initializeLocalStorage();
+}
 function initializeLocalStorage() {
     if (localStorage.getItem("balance") === null) {
         localStorage.setItem("balance", "0");
@@ -93,6 +97,27 @@ function processTransaction(transaction){
 }
 
 //###########################Getting visual data ######################################
+function getDailyExpensesThisMonth() {
+  const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth(); // 0-based
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const dailyExpenses = new Array(daysInMonth).fill(0);
+
+  transactions.forEach(tx => {
+    if (tx.type !== "expense") return;
+
+    const txDate = new Date(tx.date);
+    if (txDate.getFullYear() === year && txDate.getMonth() === month) {
+      const day = txDate.getDate(); // 1 to daysInMonth
+      dailyExpenses[day - 1] += tx.amount;
+    }
+  });
+
+  return dailyExpenses;
+}
 function getCurrentMonthExpenses() {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
   const now = new Date();
@@ -216,7 +241,11 @@ function addBucketItem(item) {
   bucketList.push(item);
   localStorage.setItem("bucketList", JSON.stringify(bucketList));
 }
-
+function deleteBucketItemById(id) {
+  const bucketList = getBucketList();
+  const updated = bucketList.filter(item => item.id !== id);
+  localStorage.setItem("bucketList", JSON.stringify(updated));
+}
 //########################Category Functions ################################################
 function addIncomeCategory(category) {
   if (!category || typeof category !== "string") return; // Basic validation

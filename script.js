@@ -5,18 +5,7 @@ function getDaysInCurrentMonth() {
 }
 console.log(getDaysInCurrentMonth());
 
-const piecategories = ['Food', 'Transport', 'Shopping', 'Entertainment', 'Bills'];
-const pieamounts = [450, 120, 300, 150, 280];
-const linelabels = [...Array(getDaysInCurrentMonth()).keys().map(x=>x+1)]; 
-const lineexpenses =[120, 45, 230, 90, 310, 60, 180, 25, 220, 70, 160, 130, 90, 300, 40]; 
-const linebalance = [3000, 2955, 2725, 2635, 2325, 2265, 2085, 2060, 1840, 1770, 1610, 1480, 1390, 1090, 1050]; 
-const piebackgroundColors = [
-  '#d62839',
-  '#ba324f', 
-  '#175676', 
-  '#4ba3c3', 
-  '#cce6f4'  
-];
+
 
 const pieCtx = document.getElementById('pieChart').getContext('2d');
 const ctx = document.getElementById('lineChart').getContext('2d');
@@ -24,11 +13,11 @@ const ctx = document.getElementById('lineChart').getContext('2d');
 const lineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: linelabels,
+    labels: [],
     datasets: [
       {
         label: 'Expenses',
-        data: lineexpenses,
+        data: [],
         borderColor: '#e74c3c',  // Red for expenses
         backgroundColor: 'rgba(231, 76, 60, 0.2)',
         fill: true,
@@ -36,7 +25,7 @@ const lineChart = new Chart(ctx, {
       },
       {
         label: 'Balance',
-        data: linebalance,
+        data: [],
         borderColor: '#2ecc71',  // Green for balance
         backgroundColor: 'rgba(46, 204, 113, 0.2)',
         fill: true,
@@ -48,19 +37,39 @@ const lineChart = new Chart(ctx, {
     responsive: true,
     scales: {
       y: {
-        beginAtZero: false  // let y-scale adapt naturally
+        beginAtZero: false  
       }
     }
   }
 });
+function updateCharts() {
+  const expenseData = getDailyExpensesThisMonth();  
+  const balanceData = getDailyBalanceVariation();  
+  const categoryData = getExpenseCategoryDistribution(); 
+
+  lineChart.data.labels = [...Array(expenseData.length).keys()].map(i => i + 1);
+  lineChart.data.datasets[0].data = expenseData;
+  lineChart.data.datasets[1].data = balanceData;
+  lineChart.update();
+
+  pieChart.data.labels = Object.keys(categoryData);
+  pieChart.data.datasets[0].data = Object.values(categoryData);
+  pieChart.update();
+}
 
 const pieChart = new Chart(pieCtx, {
   type: 'pie',
   data: {
-    labels: piecategories,
+    labels: [],
     datasets: [{
-      data: pieamounts,
-      backgroundColor: piebackgroundColors
+      data: [],
+      backgroundColor: [
+  '#d62839',
+  '#ba324f', 
+  '#175676', 
+  '#4ba3c3', 
+  '#cce6f4'  
+], 
     }]
   },
   options: {
@@ -79,6 +88,20 @@ const pieChart = new Chart(pieCtx, {
 }
 
 });
+function updateBalanceDisplay() {
+  document.querySelector(".fastdiv:nth-child(4) h5").textContent = `+ ${getBalance()}$`;
+}
+function updateSavingsDisplay() {
+  document.querySelector(".fastdiv:nth-child(5) h5").textContent = `+ ${getSavings()}$`;
+}
+function updateLastIncomeExpense() {
+  const income = getLastIncome();
+  const expense = getLastExpense();
+  document.querySelector(".fastdiv:nth-child(2) h5").textContent = `+ ${income.value}$`;
+  document.querySelector(".fastdiv:nth-child(2) p").textContent = income.description;
+  document.querySelector(".fastdiv:nth-child(1) h5").textContent = `- ${expense.value}$`;
+  document.querySelector(".fastdiv:nth-child(1) p").textContent = expense.description;
+}
 
 // New transaction button
 const openBtn = document.getElementById("new-transaction-button");
@@ -143,16 +166,20 @@ window.addEventListener('click', (e) => {
 
 document.getElementById("savForm").addEventListener("submit", function(e) {
   e.preventDefault();
-  const amount = parseFloat(document.getElementById("amount").value);
-  const date = new Date().toISOString().split('T')[0];
-
-  const transaction = { description, amount, type, category, date };
-
-  processTransaction(transaction);  
-  updateBalance(transaction);     
-  updateLastIncomeExpense();    
-  updateCharts();           
-
+  const amount = parseFloat(document.getElementById("savingsAmount").value);
+  updateSavings(amount);
+  updateSavingsDisplay();
   this.reset();
   document.getElementById("savingsForm").style.display = "none";
 });
+
+function updateDashboard() {
+  updateBalanceDisplay();
+  updateSavingsDisplay();
+  updateLastIncomeExpense();
+  updateCharts();
+}
+
+// Calling these functions 
+initializeLocalStorage();
+updateDashboard();
