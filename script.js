@@ -80,7 +80,7 @@ const pieChart = new Chart(pieCtx, {
 
 });
 
-
+// New transaction button
 const openBtn = document.getElementById("new-transaction-button");
 const closeBtn = document.getElementById("closePopupBtn");
 const popup = document.getElementById("popupForm");
@@ -98,6 +98,7 @@ if (e.target === popup) {
     popup.style.display = "none";
 }
 });
+
 
 document.getElementById("transactionForm").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -119,3 +120,39 @@ document.getElementById("transactionForm").addEventListener("submit", function(e
     document.getElementById("popupForm").style.display = "none";
 });
 
+
+// Update savings button 
+const editButton = document.getElementById('edit-button');
+const savingsForm = document.getElementById('savingsForm');
+const scloseBtn = document.getElementById('sav_closeBtn');
+
+editButton.addEventListener('click', () => {
+  savingsForm.style.display = 'flex';
+});
+
+scloseBtn.addEventListener('click', () => {
+  savingsForm.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === savingsForm) {
+    savingsForm.style.display = 'none';
+  }
+});
+
+
+document.getElementById("savForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const amount = parseFloat(document.getElementById("amount").value);
+  const date = new Date().toISOString().split('T')[0];
+
+  const transaction = { description, amount, type, category, date };
+
+  processTransaction(transaction);  
+  updateBalance(transaction);     
+  updateLastIncomeExpense();    
+  updateCharts();           
+
+  this.reset();
+  document.getElementById("savingsForm").style.display = "none";
+});
