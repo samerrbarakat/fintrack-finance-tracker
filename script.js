@@ -143,7 +143,58 @@ document.getElementById("transactionForm").addEventListener("submit", function(e
     document.getElementById("popupForm").style.display = "none";
 });
 
+  const editPopup = document.getElementById("editPopup");
+  const closeEditBtn = document.getElementById("closeEditPopupBtn");
+  const editForm = document.getElementById("editTransactionForm");
 
+  let editingRow = null;
+
+document.querySelectorAll(".edit-transaction-button").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const row = btn.closest("tr");
+    const cells = row.querySelectorAll("td");
+
+    // Fill the transaction edit form
+    document.getElementById("edit-date").value = cells[0].innerText.trim();
+    document.getElementById("edit-description").value = cells[1].innerText.trim();
+    document.getElementById("edit-amount").value = cells[2].innerText.replace("$", "").trim();
+    document.getElementById("edit-category").value = cells[3].innerText.trim();
+
+    editingRow = row;
+    editPopup.style.display = "flex";
+  });
+});
+
+
+  // Handle form submission
+  editForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    if (!editingRow) return;
+
+    const cells = editingRow.querySelectorAll("td");
+    cells[0].innerText = document.getElementById("edit-date").value;
+    cells[1].innerText = document.getElementById("edit-description").value;
+    cells[2].innerText = `$${parseFloat(document.getElementById("edit-amount").value).toFixed(2)}`;
+    cells[3].innerText = document.getElementById("edit-category").value;
+
+    editPopup.style.display = "none";
+    editingRow = null;
+  });
+
+  // Close popup
+  closeEditBtn.addEventListener("click", () => {
+    editPopup.style.display = "none";
+    editingRow = null;
+  });
+
+  // Close when clicking outside
+  window.addEventListener("click", (e) => {
+    if (e.target === editPopup) {
+      editPopup.style.display = "none";
+      editingRow = null;
+    }
+  });
 // Update savings button 
 const editButton = document.getElementById('edit-button');
 const savingsForm = document.getElementById('savingsForm');

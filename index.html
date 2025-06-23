@@ -96,6 +96,28 @@
                 </div>
             </div>
             <h2 class="section-title">Transaction History</h2>
+            <!-- Pop edit form -->
+            <div id="editPopup" class="popup-overlay">
+                <div class="popup-content">
+                    <span id="closeEditPopupBtn" class="close-btn">&times;</span>
+                    <h2>Edit Transaction</h2>
+                    <form id="editTransactionForm">
+                    <label for="edit-description">Description:</label>
+                    <input type="text" id="edit-description" name="description" required>
+
+                    <label for="edit-amount">Amount:</label>
+                    <input type="number" id="edit-amount" name="amount" required>
+
+                    <label for="edit-category">Category:</label>
+                    <input type="text" id="edit-category" name="category" required>
+
+                    <label for="edit-date">Date:</label>
+                    <input type="date" id="edit-date" name="date" required>
+
+                    <button type="submit">Save Changes</button>
+                    </form>
+                </div>
+            </div>
             <div class="transactions">
                 <table id="transactionsTable">
                     <thead>
@@ -115,16 +137,16 @@
                             <td>Grocery Shopping</td>
                             <td>$45.20</td>
                             <td>Food</td>
-                            <td><button class="table-button"><img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
-                            <td><button class="table-button" ><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
+                            <td><button class="edit-transaction-button"><img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
+                            <td><button class="edit-transaction-button" ><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
                         </tr>
                         <tr>
                             <td>2025-06-18</td>
                             <td>Salary</td>
                             <td>$1,200.00</td>
                             <td>Income</td>
-                            <td><button class="table-button"> <img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
-                            <td><button class="table-button"><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
+                            <td><button class="edit-transaction-button"> <img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
+                            <td><button class="edit-transaction-button"><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
                         </tr>
                     </tbody>
             </table>
@@ -153,16 +175,16 @@
                         <td>MacBook Air M3</td>
                         <td>$1,300</td>
                         <td>High</td>
-                        <td><button class="table-button" ><img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
-                        <td><button class="table-button" ><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
+                        <td><button class="edit-bucket-button" ><img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
+                        <td><button class="edit-bucket-button" ><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
                     </tr>
                     <tr>
                         <td>Trip to Japan</td>
                         <td>2-week vacation</td>
                         <td>$3,000</td>
                         <td>Medium</td>
-                        <td><button class="table-button" ><img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
-                        <td><button class="table-button"><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
+                        <td><button class="edit-bucket-button" ><img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
+                        <td><button class="edit-bucket-button"><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
                     </tr>
                 </tbody>
             </table>
