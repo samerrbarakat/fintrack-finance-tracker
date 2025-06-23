@@ -240,6 +240,34 @@ document.getElementById("savForm").addEventListener("submit", function(e) {
   this.reset();
   document.getElementById("savingsForm").style.display = "none";
 });
+// Update savings button 
+const bucketButton = document.getElementById('bucket-button');
+const BucketsForm = document.getElementById('BucketsForm');
+const bcloseBtn = document.getElementById('bsav_closeBtn');
+
+bucketButton.addEventListener('click', () => {
+  BucketsForm.style.display = 'flex';
+});
+
+bcloseBtn.addEventListener('click', () => {
+  BucketsForm.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === BucketsForm) {
+    BucketsForm.style.display = 'none';
+  }
+});
+
+
+document.getElementById("savForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const amount = parseFloat(document.getElementById("savingsAmount").value);
+  updateSavings(amount);
+  updateSavingsDisplay();
+  this.reset();
+  document.getElementById("BucketsForm").style.display = "none";
+});
 
 function updateDashboard() {
   updateBalanceDisplay(); // UI func

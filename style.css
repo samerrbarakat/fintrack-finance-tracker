@@ -77,7 +77,7 @@ header h1{
   font-size: 0.95rem;
   color: #dcdcdc;
 }
-#new-transaction-button , #edit-button {
+#new-transaction-button , #edit-button ,#bucket-button {
   background-color: #206a74;
   border: none;
   color: white;
@@ -88,7 +88,7 @@ header h1{
   transition: background 0.3s ease;
 }
 
-#new-transaction-button:hover , #edit-button:hover{
+#new-transaction-button:hover , #edit-button:hover, #bucket-button:hover{
   background-color: rgb(0, 182, 202);
   font-weight: bolder;
 }
