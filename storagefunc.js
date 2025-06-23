@@ -40,6 +40,7 @@ function initializeLocalStorage() {
     if (localStorage.getItem("expenseCategories") === null) {
         localStorage.setItem("expenseCategories", JSON.stringify([]));
     }
+    console.log("storage initialized") ; 
 
 }
 //#############################Get functions ##################################################
@@ -71,6 +72,7 @@ function getExpenseCategories() {
 }
 //###############################processing a transaction###############################
 function processTransaction(transaction){
+  console.log("Processing transaction in storage started ");
     if (!transaction.id) {
     transaction.id = Date.now().toString();
     }
@@ -94,6 +96,9 @@ function processTransaction(transaction){
     currBalance -= transaction.amount; 
     localStorage.setItem("balance", currBalance.toString());
 }
+  console.log("Processing transaction in storage ended ");
+  console.log(localStorage.getItem("balance"),localStorage.getItem("transactions")); 
+
 }
 
 //###########################Getting visual data ######################################
@@ -104,7 +109,7 @@ function getDailyExpensesThisMonth() {
   const month = now.getMonth(); // 0-based
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const dailyExpenses = new Array(daysInMonth).fill(0);
+  const dailyExpenses = new Array(daysInMonth).fill(0); // initialize an array of size daysInMonth
 
   transactions.forEach(tx => {
     if (tx.type !== "expense") return;
@@ -112,12 +117,13 @@ function getDailyExpensesThisMonth() {
     const txDate = new Date(tx.date);
     if (txDate.getFullYear() === year && txDate.getMonth() === month) {
       const day = txDate.getDate(); // 1 to daysInMonth
-      dailyExpenses[day - 1] += tx.amount;
+      dailyExpenses[day - 1] += tx.amount; // accumulating the expenses of each of day 
     }
   });
 
   return dailyExpenses;
 }
+
 function getCurrentMonthExpenses() {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
   const now = new Date();
@@ -280,20 +286,36 @@ function deleteExpenseCategory(category) {
 //################### Retrive Expense Category values ###################################
 function getExpenseCategoryDistribution() {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-  const expenseTxs = transactions.filter(tx => tx.type === "expense");
+
+  const now = new Date();
+  const currentMonth = now.getMonth(); // 0-indexed: Jan = 0
+  const currentYear = now.getFullYear();
 
   const distribution = {};
 
-  expenseTxs.forEach(tx => {
-    const cat = tx.category || "Uncategorized";
-    distribution[cat] = (distribution[cat] || 0) + tx.amount;
+  transactions.forEach(tx => {
+    if (tx.type !== "expense") return;
+
+    const txDate = new Date(tx.date); // assuming tx.date is a string like "2025-06-23"
+    const isSameMonth = txDate.getMonth() === currentMonth && txDate.getFullYear() === currentYear;
+
+    if (isSameMonth) {
+      const cat = tx.category || "Uncategorized";
+      distribution[cat] = (distribution[cat] || 0) + tx.amount;
+    }
   });
 
-  return distribution; // { "Grocery": 200, "Rent": 500, ... }
+  return distribution;
 }
+
 //###############################Saving##########################
 function updateSavings(newAmount) {
   if (typeof newAmount !== "number" || isNaN(newAmount)) return false;
   localStorage.setItem("savings", newAmount.toString());
   return true;
+}
+
+function clearLocalStorage(){
+  localStorage.clear();
+  console.log("local storage emptied"); 
 }

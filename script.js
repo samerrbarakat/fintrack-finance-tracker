@@ -1,23 +1,21 @@
 // useful functions 
-function getDaysInCurrentMonth() {
+function getDaysInCurrentMonth() { // gets the number of days in current month 
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
 }
 console.log(getDaysInCurrentMonth());
 
+const pieCtx = document.getElementById('pieChart').getContext('2d'); // reference ot pie chart 
+const ctx = document.getElementById('lineChart').getContext('2d');// reference to line chart 
 
-
-const pieCtx = document.getElementById('pieChart').getContext('2d');
-const ctx = document.getElementById('lineChart').getContext('2d');
-
-const lineChart = new Chart(ctx, {
+const lineChart = new Chart(ctx, {// initialize line chart 
   type: 'line',
   data: {
-    labels: [],
+    labels: [], // initialli empty 
     datasets: [
       {
         label: 'Expenses',
-        data: [],
+        data: [],  // initialli empty 
         borderColor: '#e74c3c',  // Red for expenses
         backgroundColor: 'rgba(231, 76, 60, 0.2)',
         fill: true,
@@ -25,7 +23,7 @@ const lineChart = new Chart(ctx, {
       },
       {
         label: 'Balance',
-        data: [],
+        data: [], // initially empty 
         borderColor: '#2ecc71',  // Green for balance
         backgroundColor: 'rgba(46, 204, 113, 0.2)',
         fill: true,
@@ -42,22 +40,8 @@ const lineChart = new Chart(ctx, {
     }
   }
 });
-function updateCharts() {
-  const expenseData = getDailyExpensesThisMonth();  
-  const balanceData = getDailyBalanceVariation();  
-  const categoryData = getExpenseCategoryDistribution(); 
 
-  lineChart.data.labels = [...Array(expenseData.length).keys()].map(i => i + 1);
-  lineChart.data.datasets[0].data = expenseData;
-  lineChart.data.datasets[1].data = balanceData;
-  lineChart.update();
-
-  pieChart.data.labels = Object.keys(categoryData);
-  pieChart.data.datasets[0].data = Object.values(categoryData);
-  pieChart.update();
-}
-
-const pieChart = new Chart(pieCtx, {
+const pieChart = new Chart(pieCtx, { // initialize the pie chart 
   type: 'pie',
   data: {
     labels: [],
@@ -86,13 +70,21 @@ const pieChart = new Chart(pieCtx, {
     }
   }
 }
-
 });
-function updateBalanceDisplay() {
-  document.querySelector(".fastdiv:nth-child(4) h5").textContent = `+ ${getBalance()}$`;
-}
-function updateSavingsDisplay() {
-  document.querySelector(".fastdiv:nth-child(5) h5").textContent = `+ ${getSavings()}$`;
+
+function updateCharts() { // render the updated data of both charts. 
+  const expenseData = getDailyExpensesThisMonth(); // storage function 
+  const balanceData = getDailyBalanceVariation();  // storage function 
+  const categoryData = getExpenseCategoryDistribution(); // storage function 
+
+  lineChart.data.labels = [...Array(expenseData.length).keys()].map(i => i + 1);
+  lineChart.data.datasets[0].data = expenseData;
+  lineChart.data.datasets[1].data = balanceData;
+  lineChart.update();
+
+  pieChart.data.labels = Object.keys(categoryData);
+  pieChart.data.datasets[0].data = Object.values(categoryData);
+  pieChart.update();
 }
 function updateLastIncomeExpense() {
   const income = getLastIncome();
@@ -125,29 +117,54 @@ if (e.target === popup) {
 
 document.getElementById("transactionForm").addEventListener("submit", function(e) {
     e.preventDefault();
-
+    console.log("Transaction processing started"); 
     const description = document.getElementById("description").value;
     const amount = parseFloat(document.getElementById("amount").value);
     const type = document.getElementById("type").value;
     const category = document.getElementById("Category").value;
     const date = new Date().toISOString().split('T')[0];
+    const id = Date.now(); // Generate unique ID
 
-    const transaction = { description, amount, type, category, date };
+    const transaction = { id, description, amount, type, category, date };
 
-    processTransaction(transaction);  
-    updateBalance(transaction);     
-    updateLastIncomeExpense();    
-    updateCharts();           
+    processTransaction(transaction);  // storage function 
+    updateDashboard() ;     // UI function 
 
     this.reset();
     document.getElementById("popupForm").style.display = "none";
+    console.log("Transaction processing ended"); 
+
 });
 
-  const editPopup = document.getElementById("editPopup");
-  const closeEditBtn = document.getElementById("closeEditPopupBtn");
-  const editForm = document.getElementById("editTransactionForm");
+function updateBalanceDisplay() {
+  document.querySelector("#balance-box h5").textContent = `${getBalance()}$`;
+}
 
-  let editingRow = null;
+function updateSavingsDisplay() {
+  document.querySelector("#savings-box h5").textContent = `${getSavings()}$`;
+}
+
+function updateLastIncomeExpense() {
+  const lastIncome = getLastIncome();   // { description, value }
+  const lastExpense = getLastExpense(); // { description, value }
+
+  if (lastIncome) {
+    document.querySelector("#last-income-box h5").textContent = `+${lastIncome.value}$`;
+    document.querySelector("#last-income-box p").textContent = lastIncome.description;
+  }
+
+  if (lastExpense) {
+    document.querySelector("#last-expense-box h5").textContent = `-${lastExpense.value}$`;
+    document.querySelector("#last-expense-box p").textContent = lastExpense.description;
+  }
+} ; 
+
+
+const editPopup = document.getElementById("editPopup");
+const closeEditBtn = document.getElementById("closeEditPopupBtn");
+const editForm = document.getElementById("editTransactionForm");
+
+let editingRow = null;
 
 document.querySelectorAll(".edit-transaction-button").forEach((btn) => {
   btn.addEventListener("click", (e) => {
@@ -225,12 +242,88 @@ document.getElementById("savForm").addEventListener("submit", function(e) {
 });
 
 function updateDashboard() {
-  updateBalanceDisplay();
-  updateSavingsDisplay();
-  updateLastIncomeExpense();
-  updateCharts();
+  updateBalanceDisplay(); // UI func
+  updateSavingsDisplay(); // UI func
+  updateLastIncomeExpense(); // UI func
+  updateCharts(); // UI func 
 }
+////////////// 
+const typeSelect = document.getElementById("type");
+const categorySelect = document.getElementById("Category");
 
+function updateCategoryOptions() {
+  let categories = [];
+  if (typeSelect.value === "income") {
+    categories = JSON.parse(localStorage.getItem("incomeCategories")) || [];
+  } else if (typeSelect.value === "expense") {
+    categories = JSON.parse(localStorage.getItem("expenseCategories")) || [];
+  }
+  
+  // Clear existing options
+  categorySelect.innerHTML = "";
+  
+  // Populate new options
+  categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.appendChild(option);
+  });
+}
+typeSelect.addEventListener("change", () => {
+  updateCategoryOptions();
+});
+////////////////////////////////////
+const categoryPopup = document.getElementById("categoryPopup");
+const closeCategoryPopup = document.getElementById("closeCategoryPopup");
+const categoryForm = document.getElementById("categoryForm");
+// Close popup
+document.getElementById("addCategoryBtn").addEventListener("click", () => {
+  categoryPopup.style.display = "flex";
+});
+closeCategoryPopup.addEventListener("click", () => {
+  categoryPopup.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === categoryPopup) {
+    categoryPopup.style.display = "none";
+  }
+});
+
+// Handle form submission
+categoryForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const type = document.getElementById("categoryType").value;
+  const name = document.getElementById("categoryName").value.trim();
+  
+  if (!name) {
+    alert("Category name cannot be empty.");
+    return;
+  }
+  
+  const key = type === "income" ? "incomeCategories" : "expenseCategories";
+  const categories = JSON.parse(localStorage.getItem(key)) || [];
+  
+  if (categories.includes(name)) {
+    alert("Category already exists.");
+    return;
+  }
+  
+  categories.push(name);
+  localStorage.setItem(key, JSON.stringify(categories));
+  alert(`Category "${name}" added successfully.`);
+  
+  categoryPopup.style.display = "none";
+  categoryForm.reset();
+  
+  // Optional: update category dropdown in your transaction form if open
+  if (document.getElementById("type").value === type) {
+    updateCategoryOptions();
+  }
+});
 // Calling these functions 
+// clearLocalStorage(); 
 initializeLocalStorage();
+updateCategoryOptions();
 updateDashboard();

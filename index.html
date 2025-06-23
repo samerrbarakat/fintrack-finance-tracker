@@ -17,12 +17,12 @@
                 <!-- Here we have 3 blocks that show some fast insights-->
                 <h2 class="section-title">Quick Overview</h2>
                 <div class="fast-insights">
-                    <div class="fastdiv">
+                    <div class="fastdiv" id="last-expense-box">
                         <!-- Just a box showing the last expense with it's value -->
                         <h5>- 200$ </h5>
                         <p> Gift for mom</p>
                     </div>
-                    <div class="fastdiv">
+                    <div class="fastdiv" id="last-income-box">
                         <!-- Just a box showing the last income with it's value -->
                         <h5> +1500$ </h5>
                         <p> Salary</p>
@@ -46,22 +46,20 @@
                                     <option value="expense">Expense</option>
                                 </select>
 
-                                <label for="Category">Type:</label>
+                                <label for="Category">Category:</label>
                                 <select id="Category" name="Category">
-                                    <option value="Grocery">Income</option>
-                                    <option value="Home">Expense</option>
                                 </select>
 
                                 <button type="submit">Submit</button>
                             </form>
                         </div>
                     </div>
-                    <div class="fastdiv">                    
+                    <div class="fastdiv" id="balance-box">                    
                         <!-- Just a box showing the current balance  -->
                         <h5>+ 3400$</h5>
                         <p>Balance</p>
                     </div>
-                    <div class="fastdiv">                    
+                    <div class="fastdiv" id="savings-box">                    
                         <!-- Just a box showing the current balance  -->
                         <h5>+10000$</h5>
                         <p>Savings</p>
@@ -132,7 +130,7 @@
                     </thead>
                     <tbody id="transactionsBody">
                         <!-- JS will insert rows here -->
-                        <tr>
+                        <!-- <tr>
                             <td>2025-06-19</td>
                             <td>Grocery Shopping</td>
                             <td>$45.20</td>
@@ -147,7 +145,7 @@
                             <td>Income</td>
                             <td><button class="edit-transaction-button"> <img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
                             <td><button class="edit-transaction-button"><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
-                        </tr>
+                        </tr> -->
                     </tbody>
             </table>
             <!-- It shows a list of all the transactions as a table, you could edit delete , -->
@@ -170,7 +168,7 @@
                 </thead>
                 <tbody id="BucketListBody">
                     <!-- JS will insert rows here -->
-                    <tr>
+                    <!-- <tr>
                         <td>New Laptop</td>
                         <td>MacBook Air M3</td>
                         <td>$1,300</td>
@@ -185,7 +183,7 @@
                         <td>Medium</td>
                         <td><button class="edit-bucket-button" ><img  class="img-edit" src="img/edit.png" alt="Edit"></button></td>
                         <td><button class="edit-bucket-button"><img  class="img-edit" src="img/bin.png" alt="bin"></button></td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -209,14 +207,33 @@
              <div class="settings-buttons">
                 <button onclick="resetAllData()">Reset All Data</button>
                 <button onclick="changeBalance()">Change Balance</button>
-                <button onclick="addIncomeCategory()">Add Income Category</button>
-                <button onclick="addExpenseCategory()">Add Expense Category</button>
+                <button id="addCategoryBtn">Add Category</button>
                 <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
                 <button onclick="hideArticles()">Toggle Article Section</button>
             </div>
         </div>
+        <div id="categoryPopup" class="popup-overlay" style="display:none;">
+            <div class="popup-content">
+                <span id="closeCategoryPopup" class="close-btn">&times;</span>
+                <h2>Add New Category</h2>
+                <form id="categoryForm">
+                    <label for="categoryType">Category Type:</label>
+                    <select id="categoryType" name="categoryType" required>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+
+                    <label for="categoryName">Category Name:</label>
+                    <input type="text" id="categoryName" name="categoryName" required>
+
+                    <button type="submit">Add Category</button>
+                </form>
+            </div>
+        </div>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="storagefunc.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
