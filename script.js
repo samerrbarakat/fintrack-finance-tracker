@@ -322,8 +322,52 @@ categoryForm.addEventListener("submit", (e) => {
     updateCategoryOptions();
   }
 });
+// rendering transadctions : 
+function renderCurrentMonthTransactions() {
+  const transactions = getAllTransactions(); // from storage
+  const tbody = document.getElementById("transactionsBody");
+  tbody.innerHTML = ""; // Clear existing rows
+
+  const now = new Date();
+  const currMonth = now.getMonth();
+  const currYear = now.getFullYear();
+
+  transactions
+    .filter(tx => {
+      const date = new Date(tx.date);
+      return date.getMonth() === currMonth && date.getFullYear() === currYear;
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date)) // Optional: newest first
+    .forEach(tx => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${tx.date}</td>
+        <td>${tx.description}</td>
+        <td>${tx.type === "expense" ? "-" : "+"}${tx.amount.toFixed(2)}$</td>
+        <td>${tx.category}</td>
+        <td><button class="edit-transaction-button"><img class="img-edit" src="img/edit.png" alt="Edit"></button></td>
+        <td><button class="delete-transaction-button"><img class="img-edit" src="img/bin.png" alt="bin"></button></td>
+      `;
+
+      // Add event listeners (editing, deleting)
+      row.querySelector(".edit-transaction-button").addEventListener("click", () => {
+        handleEditTransaction(tx);
+      });
+
+      row.querySelector(".delete-transaction-button").addEventListener("click", () => {
+        deleteTransactionById(tx.id);
+        renderCurrentMonthTransactions(); // Re-render after deletion
+        updateDashboard(); // To refresh overview and charts
+      });
+
+      tbody.appendChild(row);
+    });
+}
+
 // Calling these functions 
-// clearLocalStorage(); 
+// clearLocalStorage();
 initializeLocalStorage();
+renderCurrentMonthTransactions() 
 updateCategoryOptions();
 updateDashboard();
