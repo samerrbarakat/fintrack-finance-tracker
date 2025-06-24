@@ -43,7 +43,7 @@ FINTRACKER is a minimalist yet powerful personal finance tracker designed to hel
 
 ## 🚀 Live Demo
 
-> _Coming soon_ — You can deploy this easily using [GitHub Pages](https://pages.github.com/), [Netlify](https://netlify.com), or [Vercel](https://vercel.com/).
+> _Coming soon_
 
 ---
 
@@ -53,6 +53,4 @@ FINTRACKER is a minimalist yet powerful personal finance tracker designed to hel
 - **Charts:** [Chart.js](https://www.chartjs.org/)
 - **Storage:** `localStorage` for data persistence
 
----
 
-## 📦 Folder Structure
