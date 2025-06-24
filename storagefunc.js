@@ -319,3 +319,17 @@ function clearLocalStorage(){
   localStorage.clear();
   console.log("local storage emptied"); 
 }
+function resetAllData(){
+  clearLocalStorage();
+  initializeLocalStorage();
+  renderCurrentMonthTransactions() 
+  updateCategoryOptions();
+  updateDashboard();
+  renderBucketList(); 
+}
+function toggleArticles() {
+  const section = document.getElementById("articlesSection");
+  if (section) {
+    section.style.display = section.style.display === "none" ? "block" : "none";
+  }
+}

@@ -344,13 +344,13 @@ td {
 .fastdiv img { 
   width: 30px;
 }
-.table-button, .edit-transaction-button , .delete-transaction-button{
+.table-button, .edit-transaction-button , .delete-transaction-button,.edit-bucket-button,.delete-bucket-button{
   border: 0;
   outline: 0;
   background:0;
   align-items: center;
 }
-.table-button:hover  ,.edit-transaction-button:hover , .delete-transaction-button:hover{
+.table-button:hover  ,.edit-transaction-button:hover ,.edit-bucket-button:hover,.delete-bucket-button:hover, .delete-transaction-button:hover{
   background-color: #1f2933;
   padding: 3px;
   padding-left: 5px;
@@ -359,4 +359,8 @@ td {
 }
 .img-edit{
   width: 20px;
+}
+
+#articlesSection{
+  display: none;
 }

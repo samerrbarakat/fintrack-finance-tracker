@@ -287,7 +287,6 @@ window.addEventListener('click', (e) => {
   }
 });
 
-
 document.getElementById("savForm").addEventListener("submit", function(e) {
   e.preventDefault();
   const amount = parseFloat(document.getElementById("savingsAmount").value);
@@ -420,6 +419,65 @@ function renderCurrentMonthTransactions() {
       tbody.appendChild(row);
     });
 }
+
+document.getElementById("bucketForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const description = document.getElementById("bucketDescription").value;
+  const amount = parseFloat(document.getElementById("bucketAmount").value);
+  const priority = document.getElementById("bucketPriority").value;
+
+  const item = {
+    id: Date.now().toString(),
+    description,
+    amount,
+    priority
+  };
+
+  addBucketItem(item);
+  this.reset();
+  document.getElementById("BucketsForm").style.display = "none";
+  renderBucketList(); // Optional: if you have a function that shows them on the UI
+});
+
+function renderBucketList() {
+  const bucketList = getBucketList();
+  const tbody = document.getElementById("BucketListBody");
+  tbody.innerHTML = "";
+
+  bucketList.forEach(item => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${item.description}</td>
+      <td>$${item.amount}</td>
+      <td>${item.priority}</td>
+      <td>
+        <button class="edit-bucket-button">
+          <img class="img-edit" src="img/edit.png" alt="Edit">
+        </button>
+      </td>
+      <td>
+        <button class="delete-bucket-button">
+          <img class="img-edit" src="img/bin.png" alt="Delete">
+        </button>
+      </td>
+    `;
+
+    row.querySelector(".edit-bucket-button").addEventListener("click", () => {
+      updateBucketItemById(item); // your function
+    });
+
+    row.querySelector(".delete-bucket-button").addEventListener("click", () => {
+      deleteBucketItemById(item.id);
+      renderBucketList();
+    });
+
+    tbody.appendChild(row);
+  });
+}
+
+
 //////////////// Editing a transaction. 
 // Calling these functions 
 // clearLocalStorage();
@@ -427,3 +485,4 @@ initializeLocalStorage();
 renderCurrentMonthTransactions() 
 updateCategoryOptions();
 updateDashboard();
+renderBucketList(); 
