@@ -132,6 +132,9 @@ document.getElementById("transactionForm").addEventListener("submit", function(e
 
     this.reset();
     document.getElementById("popupForm").style.display = "none";
+    /////
+    renderCurrentMonthTransactions(); // Re-render after deletion
+    updateDashboard(); // To refresh overview and charts
     console.log("Transaction processing ended"); 
 
 });
@@ -164,54 +167,55 @@ const editPopup = document.getElementById("editPopup");
 const closeEditBtn = document.getElementById("closeEditPopupBtn");
 const editForm = document.getElementById("editTransactionForm");
 
-let editingRow = null;
 
-document.querySelectorAll(".edit-transaction-button").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    const row = btn.closest("tr");
-    const cells = row.querySelectorAll("td");
+let editingTransactionId = null;
+function handleEditTransaction(tx) {
+  editingTransactionId = tx.id;
 
-    // Fill the transaction edit form
-    document.getElementById("edit-date").value = cells[0].innerText.trim();
-    document.getElementById("edit-description").value = cells[1].innerText.trim();
-    document.getElementById("edit-amount").value = cells[2].innerText.replace("$", "").trim();
-    document.getElementById("edit-category").value = cells[3].innerText.trim();
+  document.getElementById("edit-date").value = tx.date;
+  document.getElementById("edit-description").value = tx.description;
+  document.getElementById("edit-amount").value = tx.amount;
+  document.getElementById("edit-category").value = tx.category;
 
-    editingRow = row;
-    editPopup.style.display = "flex";
-  });
+  document.getElementById("editPopup").style.display = "flex";
+}
+
+// Handle form submission
+editForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  if (!editingTransactionId) return;
+
+  const updatedTransaction = {
+    id: editingTransactionId,
+    date: document.getElementById("edit-date").value,
+    description: document.getElementById("edit-description").value,
+    amount: parseFloat(document.getElementById("edit-amount").value),
+    category: document.getElementById("edit-category").value,
+    type: "expense" // or "income" if you support both (you can add a dropdown for this too)
+  };
+
+  updateTransactionById(editingTransactionId, updatedTransaction); // storage function
+  renderCurrentMonthTransactions(); // UI
+  updateDashboard(); //  UI
+
+  document.getElementById("editPopup").style.display = "none";
+  editingTransactionId = null;
 });
 
 
-  // Handle form submission
-  editForm.addEventListener("submit", function (e) {
-    e.preventDefault();
+// Close popup
+closeEditBtn.addEventListener("click", () => {
+  editPopup.style.display = "none";
+  editingRow = null;
+});
 
-    if (!editingRow) return;
-
-    const cells = editingRow.querySelectorAll("td");
-    cells[0].innerText = document.getElementById("edit-date").value;
-    cells[1].innerText = document.getElementById("edit-description").value;
-    cells[2].innerText = `$${parseFloat(document.getElementById("edit-amount").value).toFixed(2)}`;
-    cells[3].innerText = document.getElementById("edit-category").value;
-
+// Close when clicking outside
+window.addEventListener("click", (e) => {
+  if (e.target === editPopup) {
     editPopup.style.display = "none";
     editingRow = null;
-  });
-
-  // Close popup
-  closeEditBtn.addEventListener("click", () => {
-    editPopup.style.display = "none";
-    editingRow = null;
-  });
-
-  // Close when clicking outside
-  window.addEventListener("click", (e) => {
-    if (e.target === editPopup) {
-      editPopup.style.display = "none";
-      editingRow = null;
-    }
-  });
+  }
+});
 // Update savings button 
 const editButton = document.getElementById('edit-button');
 const savingsForm = document.getElementById('savingsForm');
@@ -365,7 +369,7 @@ function renderCurrentMonthTransactions() {
       const date = new Date(tx.date);
       return date.getMonth() === currMonth && date.getFullYear() === currYear;
     })
-    .sort((a, b) => new Date(b.date) - new Date(a.date)) // Optional: newest first
+    .sort((a, b) => b.id - a.id) // Optional: newest first
     .forEach(tx => {
       const row = document.createElement("tr");
 
@@ -392,7 +396,7 @@ function renderCurrentMonthTransactions() {
       tbody.appendChild(row);
     });
 }
-
+//////////////// Editing a transaction. 
 // Calling these functions 
 // clearLocalStorage();
 initializeLocalStorage();
