@@ -167,40 +167,64 @@ const editPopup = document.getElementById("editPopup");
 const closeEditBtn = document.getElementById("closeEditPopupBtn");
 const editForm = document.getElementById("editTransactionForm");
 
-
 let editingTransactionId = null;
+
 function handleEditTransaction(tx) {
   editingTransactionId = tx.id;
 
   document.getElementById("edit-date").value = tx.date;
   document.getElementById("edit-description").value = tx.description;
   document.getElementById("edit-amount").value = tx.amount;
-  document.getElementById("edit-category").value = tx.category;
+  document.getElementById("edit-type").value = tx.type; // Set type dropdown
 
-  document.getElementById("editPopup").style.display = "flex";
+  // Now populate categories based on type
+  updateEditCategoryOptions(tx.type, tx.category);
+
+  editPopup.style.display = "flex";
 }
 
-// Handle form submission
+function updateEditCategoryOptions(type, selectedCategory = "") {
+  const editCategorySelect = document.getElementById("edit-category");
+  const key = type === "income" ? "incomeCategories" : "expenseCategories";
+  const categories = JSON.parse(localStorage.getItem(key)) || [];
+
+  editCategorySelect.innerHTML = "";
+  categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    if (cat === selectedCategory) option.selected = true;
+    editCategorySelect.appendChild(option);
+  });
+}
+
+// Dynamically update categories in edit form when type is changed
+document.getElementById("edit-type").addEventListener("change", () => {
+  const selectedType = document.getElementById("edit-type").value;
+  updateEditCategoryOptions(selectedType);
+});
+
+
+
 editForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  if (!editingTransactionId) return;
+const updatedTransaction = {
+  description: document.getElementById("edit-description").value,
+  amount: parseFloat(document.getElementById("edit-amount").value),
+  category: document.getElementById("edit-category").value,
+  date: document.getElementById("edit-date").value,
+  type: document.getElementById("edit-type").value  // ← CORRECTED LINE
+};
 
-  const updatedTransaction = {
-    id: editingTransactionId,
-    date: document.getElementById("edit-date").value,
-    description: document.getElementById("edit-description").value,
-    amount: parseFloat(document.getElementById("edit-amount").value),
-    category: document.getElementById("edit-category").value,
-    type: "expense" // or "income" if you support both (you can add a dropdown for this too)
-  };
-
-  updateTransactionById(editingTransactionId, updatedTransaction); // storage function
-  renderCurrentMonthTransactions(); // UI
-  updateDashboard(); //  UI
-
-  document.getElementById("editPopup").style.display = "none";
-  editingTransactionId = null;
+  const success = updateTransactionById(editingTransactionId, updatedTransaction);
+  if (success) {
+    renderCurrentMonthTransactions();
+    updateDashboard();
+    editPopup.style.display = "none";
+    editingTransactionId = null;
+  }
 });
+
 
 
 // Close popup
