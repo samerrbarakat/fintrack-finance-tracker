@@ -38,7 +38,7 @@
                                 <input type="text" id="description" name="description" required>
 
                                 <label for="amount">Amount:</label>
-                                <input type="number" id="amount" name="amount" required>
+                                <input type="number" id="amount" name="amount" step="0.01" required>
 
                                 <label for="type">Type:</label>
                                 <select id="type" name="type">
@@ -74,7 +74,7 @@
                         <h2>Savings</h2>
                         <form id="savForm">
                             <label for="amount">Amount:</label>
-                            <input type="number" id="savingsAmount" name="savingsAmount" required>
+                            <input type="number" id="savingsAmount" step="0.01" name="savingsAmount" required>
                             <button type="submit">Update</button>
                         </form>
                     </div>
@@ -93,7 +93,7 @@
                         <input type="text" id="bucketDescription" name="bucketDescription" required>
 
                         <label for="BucketAmount">Amount:</label>
-                        <input type="number" id="bucketAmount" name="bucketAmount" required>
+                        <input type="number" id="bucketAmount"   step="0.01" name="bucketAmount" required>
 
                         <label for="bucketPriority">Priority:</label>
                         <select id="bucketPriority" name="bucketPriority" required>
